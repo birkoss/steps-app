@@ -6,7 +6,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 
-import { HomePage } from '../pages/home/home';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { ChallengesPage } from '../pages/challenges/challenges';
 import { StatsPage } from '../pages/stats/stats';
@@ -37,7 +36,6 @@ import { NewDeviceModal } from '../modals/new-device/new-device';
   declarations: [
     MyApp,
 
-    HomePage,
     DashboardPage,
     ChallengesPage,
     StatsPage,
@@ -58,7 +56,6 @@ import { NewDeviceModal } from '../modals/new-device/new-device';
   entryComponents: [
     MyApp,
 
-    HomePage,
     DashboardPage,
     ChallengesPage,
     StatsPage,
