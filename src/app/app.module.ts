@@ -9,6 +9,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { ChallengesPage } from '../pages/challenges/challenges';
+import { StatsPage } from '../pages/stats/stats';
 import { DevicesListPage } from '../pages/devices-list/devices-list';
 import { LoadingPage } from '../pages/loading/loading';
 import { MainTabs } from '../pages/tabs/tabs';
@@ -39,6 +40,7 @@ import { NewDeviceModal } from '../modals/new-device/new-device';
     HomePage,
     DashboardPage,
     ChallengesPage,
+    StatsPage,
     LoadingPage,
     DevicesListPage,
     MainTabs,
@@ -59,6 +61,7 @@ import { NewDeviceModal } from '../modals/new-device/new-device';
     HomePage,
     DashboardPage,
     ChallengesPage,
+    StatsPage,
     LoadingPage,
     DevicesListPage,
     MainTabs,
