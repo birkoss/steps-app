@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 
 import { DashboardPage } from '../dashboard/dashboard';
+import { ChallengesPage } from '../challenges/challenges';
 
 export interface TabInterface {
     title: string;
@@ -18,7 +19,7 @@ export class MainTabs {
     private tabs: TabInterface[] = [
         {title: 'Dashboard', icon:'home', pageRoot:DashboardPage},
         {title: 'Stats', icon:'stats', pageRoot:DashboardPage},
-        {title: 'Challenges', icon:'walk', pageRoot:DashboardPage}
+        {title: 'Challenges', icon:'walk', pageRoot:ChallengesPage}
     ];
 
     mySelectedIndex: number;
