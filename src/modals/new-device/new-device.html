@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar color="secondary">
-        <ion-title>New Device</ion-title>
+        <ion-title>New System</ion-title>
         <ion-buttons start>
             <button ion-button (click)="close()">
                 <ion-icon name="close"></ion-icon>
@@ -12,11 +12,11 @@
 <ion-content padding>
 
     <div class="step" *ngIf="currentStep == 1">
-        <p>Choose your device: </p>
+        <p>Choose your system: </p>
 
         <ion-list no-lines>
-            <ion-item *ngFor="let device of devices" [ngClass]="{ 'disabled' : !isDeviceAvailable(device.id) }" (tap)="selectDevice(device)">
-                {{device.name}}
+            <ion-item *ngFor="let system of systems" [ngClass]="{ 'disabled' : !isSystemAvailable(system.id) }" (tap)="selectSystem(system)">
+                {{system.name}}
                 <ion-icon name="add" item-right></ion-icon>
             </ion-item>
         </ion-list>

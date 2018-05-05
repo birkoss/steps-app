@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 import { LoadingController, ViewController, NavParams } from 'ionic-angular';
 
-import { StepsDevice, StepsProvider } from '../../providers/steps';
+import { StepsSystem, StepsProvider } from '../../providers/steps';
+import { ConfigsProvider } from '../../providers/configs';
 
 @Component({
     selector: 'new-device-modal',
@@ -13,20 +14,20 @@ export class NewDeviceModal {
 
     private loading:any;
 
-    private devices:StepsDevice[] = [];
+    private systems:StepsSystem[] = [];
 
     private currentStep:number = 1;
-    private currentDevice:StepsDevice;
+    private currentSystem:StepsSystem;
 
     private errorMessage:string = "";
 
-    constructor(private loadingCtrl:LoadingController, private stepsProvider:StepsProvider, public viewCtrl:ViewController) {
-        this.devices = this.stepsProvider.getDevices();
+    constructor(private loadingCtrl:LoadingController, private stepsProvider:StepsProvider, private configsProvider:ConfigsProvider, private viewCtrl:ViewController) {
+        this.systems = this.stepsProvider.getSystems();
     }
 
-    selectDevice(device:StepsDevice) {
-        if (this.isDeviceAvailable(device.id)) {
-            this.currentDevice = device;
+    selectSystem(system:StepsSystem) {
+        if (this.isSystemAvailable(system.id)) {
+            this.currentSystem = system;
             this.currentStep = 2;
 
             this.askPermissions();
@@ -37,10 +38,10 @@ export class NewDeviceModal {
         this.viewCtrl.dismiss();
     }
 
-    private isDeviceAvailable(device_id) {
+    private isSystemAvailable(systemID) {
         let available:boolean = true;
-        this.stepsProvider.getConfigDevices().filter(single_device_id => {
-            if (single_device_id == device_id) {
+        this.configsProvider.getSystems().filter(single_systemID => {
+            if (single_systemID == systemID) {
                 available = false;
             }
         });
@@ -55,21 +56,21 @@ export class NewDeviceModal {
 
           this.loading.present();
 
-        this.stepsProvider.askPermissions(this.currentDevice.id).then(
-            (val) => this.addDevice(val),  
-            (err) => this.retryDevice(err)
+        this.stepsProvider.askPermissions(this.currentSystem.id).then(
+            (val) => this.addSystem(val),  
+            (err) => this.retrySystem(err)
         );
     }
 
-    private addDevice(json) {
+    private addSystem(json) {
         this.loading.dismiss();
 
-        this.stepsProvider.addDevice(this.currentDevice);
+        this.configsProvider.addSystem(this.currentSystem);
 
         this.currentStep = 3;
     }
 
-    private retryDevice(json) {
+    private retrySystem(json) {
         this.loading.dismiss();
         this.errorMessage = json['message'];
     }

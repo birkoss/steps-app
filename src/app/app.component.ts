@@ -8,8 +8,6 @@ import { MainTabs } from '../pages/tabs/tabs';
 import { LoadingPage } from '../pages/loading/loading';
 import { DevicesListPage } from '../pages/devices-list/devices-list';
 
-import { StepsProvider } from '../providers/steps';
-
 export interface PageInterface {
     title:string;
     component:any;
@@ -27,11 +25,8 @@ export class MyApp {
 
   rootPage:any = LoadingPage;
 
-  constructor(stepsProvider:StepsProvider, public menu:MenuController, platform:Platform, statusBar:StatusBar, splashScreen:SplashScreen) {
+  constructor(public menu:MenuController, platform:Platform, statusBar:StatusBar, splashScreen:SplashScreen) {
     platform.ready().then(() => {
-      stepsProvider.load().then(result => {
-
-        console.log("Loaded: " + result);
 
         this.pages = [
           {title: 'Dashboard', component:MainTabs, icon: 'home'},
@@ -40,7 +35,6 @@ export class MyApp {
 
         statusBar.styleDefault();
         splashScreen.hide();
-      });
     });
   }
 

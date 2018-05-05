@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-
-import { Storage } from '@ionic/storage';
 
 import { Health } from '@ionic-native/health';
 
@@ -9,52 +6,25 @@ import { ConfigsProvider } from "./configs"
 
 declare var SamsungHealth:any;
 
-import 'rxjs/add/operator/map';
-
-export interface StepsDevice {
+export interface StepsSystem {
     id:string;
     name:string;
 }
 
 @Injectable()
 export class StepsProvider {
+	private systems:StepsSystem[] = [];
 
-	private configs:Object = {};
-
-	private devices:StepsDevice[] = [];
-
-    constructor(private health:Health, private configsProvider:ConfigsProvider, private storage:Storage) {
-    	this.configs['devices'] = [];
-
-    	this.devices.push({id:"samsung", name: "Samsung Health"});
-        this.devices.push({id:"fitbit", name: "FitBit"});
-        this.devices.push({id:"apple", name: "Apple"});
-    	this.devices.push({id:"google", name: "Google"});
+    constructor(private health:Health, private configsProvider:ConfigsProvider) {
+    	this.systems.push({id:"samsung", name: "Samsung Health"});
+        this.systems.push({id:"fitbit", name: "FitBit"});
+        this.systems.push({id:"apple", name: "Apple"});
+    	this.systems.push({id:"google", name: "Google"});
     }
 
-    public getSteps(device:string) {
-
-    }
-
-    public load() {
+    public askPermissions(systemID:string) {
         return new Promise((resolve, reject) => {
-            this.storage.get('steps').then(data => {
-                if (data != null) {
-                    this.configs = JSON.parse(data);
-                    console.log("loading: ", data, this.configs);
-                    resolve("ok");
-                }
-            });
-        });
-    }
-
-    public save() {
-        this.storage.set('steps', JSON.stringify(this.configs));
-    }
-
-    public askPermissions(deviceID:string) {
-        return new Promise((resolve, reject) => {
-           switch (deviceID) {
+           switch (systemID) {
                 case "apple":
                 case "google":
                     this.health.isAvailable()
@@ -94,35 +64,15 @@ export class StepsProvider {
           });
      }
 
-    public getDevices():StepsDevice[] {
-    	return this.devices;
+    public getSystems():StepsSystem[] {
+    	return this.systems;
     }
 
-    public getConfigDevices():StepsDevice[] {
-        return this.configs['devices'];
-    }
-
-    public addDevice(device:StepsDevice) {
-        this.configs['devices'].push(device.id);
-        this.save();
-    }
-
-    public deleteDevice(deviceID:string) {
-        let index = this.configs['devices'].indexOf(deviceID);
-        if (index > -1) {
-            this.configs['devices'].splice(index, 1);
-            this.save();
-            return true;
-        }
-
-        return false;
-    }
-
-    public refreshSteps(deviceID:string) {
+    public refreshSteps(systemID:string) {
         var me = this;
 
         return new Promise((resolve, reject) => {
-           switch (deviceID) {
+           switch (systemID) {
                 case "apple":
                 case "google":
                 var me = this;
@@ -160,7 +110,7 @@ export class StepsProvider {
                     } else {
                         let shealth = new SamsungHealth();
 
-                        this.askPermissions(deviceID).then(
+                        this.askPermissions(systemID).then(
                             (val) => {
                                 shealth.getSteps('', function(data) {
                                     resolve({status:"success", data:me.convertSamsungHealthSteps(data)});
@@ -182,7 +132,7 @@ export class StepsProvider {
     private convertGoogleAppleSteps(data) {
         let json = data;
 
-       var devices = [];
+       var systems = [];
 
        let device = {
             uuid: "",
@@ -190,7 +140,7 @@ export class StepsProvider {
             steps: []
         };
 
-        devices.push(device);
+        systems.push(device);
 
         json.forEach(single_step => {
             var date = new Date(single_step['startDate']);
@@ -202,13 +152,13 @@ export class StepsProvider {
             device.steps.push(step);
         });
 
-        return devices;
+        return systems;
     }
 
     private convertSamsungHealthSteps(data) {
         let json = JSON.parse(data);
 
-        var devices = [];
+        var systems = [];
 
         json.forEach(single_device => {
             let device = {
@@ -227,10 +177,10 @@ export class StepsProvider {
                 device.steps.push(step);
             });
 
-            devices.push(device);
+            systems.push(device);
         });
 
-        return devices;
+        return systems;
     }
 
     private formatDate(date) {

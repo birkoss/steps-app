@@ -2,23 +2,23 @@
 	<ion-navbar color="primary">
 		<button ion-button menuToggle icon-only><ion-icon name="menu"></ion-icon></button>
 
-		<ion-title>Devices List</ion-title>
+		<ion-title>Systems List</ion-title>
 
 		<ion-buttons end>
-			<button ion-button icon-only (tap)="newDevice($event)"><ion-icon name="add"></ion-icon></button>
+			<button ion-button icon-only (tap)="newSystem($event)"><ion-icon name="add"></ion-icon></button>
 		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-	<div class="message centered" *ngIf="devices.length == 0">No device...</div>
+	<div class="message centered" *ngIf="systems.length == 0">No system...</div>
 
 	<ion-list no-lines>
-		<ion-item *ngFor="let device of devices">
-			{{device}}
-				<button ion-button icon-only clear item-end (tap)="refreshSteps(device);"><ion-icon name="refresh" color="primary"t></ion-icon></button>
-				<button ion-button icon-only clear item-end (tap)="deleteDevice(device)"><ion-icon name="trash" color="danger"t></ion-icon></button>
+		<ion-item *ngFor="let system of systems">
+			{{system}}
+				<button ion-button icon-only clear item-end (tap)="refreshSteps(system);"><ion-icon name="refresh" color="primary"t></ion-icon></button>
+				<button ion-button icon-only clear item-end (tap)="deleteSystem(system)"><ion-icon name="trash" color="danger"t></ion-icon></button>
 		</ion-item>
 	</ion-list>
 

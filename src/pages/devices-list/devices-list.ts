@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { LoadingController, AlertController, NavController, ModalController } from 'ionic-angular';
+import { LoadingController, AlertController, ModalController } from 'ionic-angular';
 
 import { NewDeviceModal } from '../../modals/new-device/new-device';
 
-import { StepsDevice, StepsProvider } from '../../providers/steps';
+import { StepsSystem, StepsProvider } from '../../providers/steps';
 import { ConfigsProvider } from '../../providers/configs';
 
 
@@ -15,22 +15,22 @@ export class DevicesListPage {
 
 	private loading:any;
 	
-	private devices:StepsDevice[] = [];
+	private systems:StepsSystem[] = [];
 
 	constructor(private loadingCtrl:LoadingController, private configsProvider:ConfigsProvider, private stepsProvider:StepsProvider, private alertCtrl:AlertController, private modalCtrl:ModalController) {
 		console.log("constructor");
 	}
 
 	private ionViewDidEnter() {
-		this.devices = this.stepsProvider.getConfigDevices();
+		this.systems = this.configsProvider.getSystems();
 	}
 
-	private newDevice(event) {
+	private newSystem(event) {
 		let modal = this.modalCtrl.create(NewDeviceModal);
         modal.present();
 	}
 
-	private refreshSteps(deviceID) {
+	private refreshSteps(systemID) {
 		this.loading = this.loadingCtrl.create({
 			spinner: 'hide',
 			content: 'Updating steps...'
@@ -38,12 +38,13 @@ export class DevicesListPage {
 		this.loading.present();
 
 		let me = this;
-		this.stepsProvider.refreshSteps(deviceID).then(
+		this.stepsProvider.refreshSteps(systemID).then(
             (data) => {
      
             	this.configsProvider.updateSteps(data['data'])
 				.then(function (data) {
 					me.loading.dismiss();
+					// @TODO Do something to show it worked
 					//alert("YEP" + data);
 				})
 				.catch((err) => { 
@@ -58,7 +59,7 @@ export class DevicesListPage {
         );
 	}
 
-	private deleteDevice(deviceID) {
+	private deleteSystem(systemID) {
 		let alert = this.alertCtrl.create({
 			title: 'Confirmation',
 			message: 'Please confirm you want to do this?',
@@ -71,7 +72,7 @@ export class DevicesListPage {
 			},{
 				text: 'Delete',
 				handler: () => {
-					this.stepsProvider.deleteDevice(deviceID);
+					this.configsProvider.deleteSystem(systemID);
 				}
 			}
 			]

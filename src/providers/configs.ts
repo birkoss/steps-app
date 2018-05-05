@@ -16,16 +16,23 @@ export class ConfigsProvider {
     private userUid:number = 0;
 
     constructor(private http:Http, private uniqueDeviceID:UniqueDeviceID, private storage:Storage) {
-    	
+        this.configs['systems']	= [];
     }
 
     public load() {
-        return this.storage.get('steps').then(data => {
-            if (data != null) {
-                this.configs = JSON.parse(data);
-                console.log("Changing default language..." + this.configs['language']);
-            }
+        return new Promise((resolve, reject) => {
+            this.storage.get('configs').then(data => {
+                if (data != null) {
+                    this.configs = JSON.parse(data);
+                    console.log("loading: ", data, this.configs);
+                }
+                resolve("ok");
+            });
         });
+    }
+
+    public save() {
+        this.storage.set('configs', JSON.stringify(this.configs));
     }
 
     public getUserUid() {
@@ -89,6 +96,27 @@ export class ConfigsProvider {
             }
         });
      }
+    public addSystem(system:any) {
+        this.configs['systems'].push(system.id);
+        this.save();
+    }
+
+
+
+    public deleteSystem(systemID:string) {
+        let index = this.configs['systems'].indexOf(systemID);
+        if (index > -1) {
+            this.configs['systems'].splice(index, 1);
+            this.save();
+            return true;
+        }
+
+        return false;
+    }
+
+    public getSystems():any[] {
+        return this.configs['systems'];
+    }
 
      private getApiUniqueID(uuid:string) {
         return new Promise((resolve, reject) => {

@@ -25,12 +25,14 @@ export class LoadingPage {
 		this.loading.present();
 
 		let me = this;
-
-		this.configsProvider.getUserUid()
-		.then(function (uuid) {
-			me.loading.dismiss();
-			// @TODO: If at least ONE device, go to Dashboard instead
-			me.navCtrl.setRoot(me.stepsProvider.getConfigDevices().length == 0 ? DevicesListPage : MainTabs);
+		this.configsProvider.load()
+		.then(function(str) {
+			me.configsProvider.getUserUid()
+			.then(function (uuid) {
+				me.loading.dismiss();
+				me.navCtrl.setRoot(me.configsProvider.getSystems().length == 0 ? DevicesListPage : MainTabs);
+			})
+			.catch((err) => { alert("NOP: " + err)});
 		})
 		.catch((err) => { alert("NOP: " + err)});
 	}
