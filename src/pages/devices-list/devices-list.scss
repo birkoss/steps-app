@@ -1,0 +1,10 @@
+page-devices-list {
+	.message.centered {
+		display: flex;
+		align-content: center;
+		justify-content: center;
+		height: 100%;
+		flex-direction: column;
+		text-align: center;
+	}
+}

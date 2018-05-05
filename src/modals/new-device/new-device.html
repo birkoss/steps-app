@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>New Device</ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="close()">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+    <div class="step" *ngIf="currentStep == 1">
+        <p>Choose your device: </p>
+
+        <ion-list no-lines>
+            <ion-item *ngFor="let device of devices" [ngClass]="{ 'disabled' : !isDeviceAvailable(device.id) }" (tap)="selectDevice(device)">
+                {{device.name}}
+                <ion-icon name="add" item-right></ion-icon>
+            </ion-item>
+        </ion-list>
+    </div>
+
+    <div class="step centered" *ngIf="currentStep == 2">
+        <p style="text-align: center">You must add the required permissions!</p>
+        <p class="errorMessage">{{errorMessage}}</p>
+        <p style="text-align: center"><button ion-button (tap)="askPermissions()">Try again</button></p>
+    </div>
+
+    <div class="step centered" *ngIf="currentStep == 3">
+        <p style="text-align: center">Congratulations!</p>
+        <p style="text-align: center"><button ion-button (tap)="close()">Close</button></p>
+    </div>
+
+</ion-content>

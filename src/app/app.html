@@ -1,0 +1,15 @@
+<ion-menu [content]="content">
+    
+    <ion-content>
+        <ion-list no-lines>
+            <ion-item *ngFor="let page of pages" (click)="openPage(page)">
+                <ion-icon [name]="page.icon" item-left></ion-icon>
+                {{page.title}}
+                <ion-icon name="ios-arrow-forward" item-right></ion-icon>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+
+</ion-menu>
+
+<ion-nav id="nav" [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

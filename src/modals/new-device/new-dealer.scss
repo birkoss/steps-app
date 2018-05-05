@@ -1,0 +1,22 @@
+new-device-modal {
+	.step.centered {
+		display: flex;
+		align-content: center;
+		justify-content: center;
+		height: 100%;
+		flex-direction: column;
+	}
+
+	p.errorMessage {
+		text-align: center;
+		font-weight: bold;
+	}
+
+	.disabled {
+		color: #cccccc;
+
+		ion-icon {
+			display: none;
+		}
+	}
+}
