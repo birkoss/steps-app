@@ -6,11 +6,11 @@ import { StepsSystem, StepsProvider } from '../../providers/steps';
 import { ConfigsProvider } from '../../providers/configs';
 
 @Component({
-    selector: 'new-device-modal',
-    templateUrl: 'new-device.html'
+    selector: 'new-system-modal',
+    templateUrl: 'new-system.html'
 })
 
-export class NewDeviceModal {
+export class NewSystemModal {
 
     private loading:any;
 

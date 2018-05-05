@@ -5,7 +5,7 @@ import { ConfigsProvider } from '../../providers/configs';
 import { StepsProvider } from '../../providers/steps';
 
 
-import { DevicesListPage } from '../devices-list/devices-list';
+import { SystemsListPage } from '../systems-list/systems-list';
 import { MainTabs } from '../tabs/tabs';
 
 @Component({
@@ -30,7 +30,7 @@ export class LoadingPage {
 			me.configsProvider.getUserUid()
 			.then(function (uuid) {
 				me.loading.dismiss();
-				me.navCtrl.setRoot(me.configsProvider.getSystems().length == 0 ? DevicesListPage : MainTabs);
+				me.navCtrl.setRoot(me.configsProvider.getSystems().length == 0 ? SystemsListPage : MainTabs);
 			})
 			.catch((err) => { alert("NOP: " + err)});
 		})

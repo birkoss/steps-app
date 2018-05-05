@@ -9,7 +9,7 @@ import { MyApp } from './app.component';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { ChallengesPage } from '../pages/challenges/challenges';
 import { StatsPage } from '../pages/stats/stats';
-import { DevicesListPage } from '../pages/devices-list/devices-list';
+import { SystemsListPage } from '../pages/systems-list/systems-list';
 import { LoadingPage } from '../pages/loading/loading';
 import { MainTabs } from '../pages/tabs/tabs';
 
@@ -28,7 +28,7 @@ import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
 import { ChartsModule } from 'ng2-charts';
 
-import { NewDeviceModal } from '../modals/new-device/new-device';
+import { NewSystemModal } from '../modals/new-system/new-system';
 
 
 
@@ -40,10 +40,10 @@ import { NewDeviceModal } from '../modals/new-device/new-device';
     ChallengesPage,
     StatsPage,
     LoadingPage,
-    DevicesListPage,
+    SystemsListPage,
     MainTabs,
 
-    NewDeviceModal
+    NewSystemModal
   ],
   imports: [
     BrowserModule,
@@ -60,10 +60,10 @@ import { NewDeviceModal } from '../modals/new-device/new-device';
     ChallengesPage,
     StatsPage,
     LoadingPage,
-    DevicesListPage,
+    SystemsListPage,
     MainTabs,
 
-    NewDeviceModal
+    NewSystemModal
   ],
   providers: [
     StepsProvider,

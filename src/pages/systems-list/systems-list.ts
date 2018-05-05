@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
 import { LoadingController, AlertController, ModalController } from 'ionic-angular';
 
-import { NewDeviceModal } from '../../modals/new-device/new-device';
+import { NewSystemModal } from '../../modals/new-system/new-system';
 
 import { StepsSystem, StepsProvider } from '../../providers/steps';
 import { ConfigsProvider } from '../../providers/configs';
 
 
 @Component({
-	selector: 'page-devices-list',
-	templateUrl: 'devices-list.html'
+	selector: 'page-systems-list',
+	templateUrl: 'systems-list.html'
 })
-export class DevicesListPage {
+export class SystemsListPage {
 
 	private loading:any;
 	
@@ -26,7 +26,7 @@ export class DevicesListPage {
 	}
 
 	private newSystem(event) {
-		let modal = this.modalCtrl.create(NewDeviceModal);
+		let modal = this.modalCtrl.create(NewSystemModal);
         modal.present();
 	}
 

@@ -6,7 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { MainTabs } from '../pages/tabs/tabs';
 import { LoadingPage } from '../pages/loading/loading';
-import { DevicesListPage } from '../pages/devices-list/devices-list';
+import { SystemsListPage } from '../pages/systems-list/systems-list';
 
 export interface PageInterface {
     title:string;
@@ -30,7 +30,7 @@ export class MyApp {
 
         this.pages = [
           {title: 'Dashboard', component:MainTabs, icon: 'home'},
-          {title: 'Devices list', component:DevicesListPage, icon: 'man'}
+          {title: 'Systems list', component:SystemsListPage, icon: 'man'}
         ];
 
         statusBar.styleDefault();
