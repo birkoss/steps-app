@@ -10,6 +10,7 @@ import { HomePage } from '../pages/home/home';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { DevicesListPage } from '../pages/devices-list/devices-list';
 import { LoadingPage } from '../pages/loading/loading';
+import { MainTabs } from '../pages/tabs/tabs';
 
 import { StepsProvider } from '../providers/steps';
 import { ConfigsProvider } from '../providers/configs';
@@ -38,6 +39,7 @@ import { NewDeviceModal } from '../modals/new-device/new-device';
     DashboardPage,
     LoadingPage,
     DevicesListPage,
+    MainTabs,
 
     NewDeviceModal
   ],
@@ -56,6 +58,7 @@ import { NewDeviceModal } from '../modals/new-device/new-device';
     DashboardPage,
     LoadingPage,
     DevicesListPage,
+    MainTabs,
 
     NewDeviceModal
   ],

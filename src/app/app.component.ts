@@ -4,7 +4,7 @@ import { Platform, MenuController, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { DashboardPage } from '../pages/dashboard/dashboard';
+import { MainTabs } from '../pages/tabs/tabs';
 import { LoadingPage } from '../pages/loading/loading';
 import { DevicesListPage } from '../pages/devices-list/devices-list';
 
@@ -34,7 +34,7 @@ export class MyApp {
         console.log("Loaded: " + result);
 
         this.pages = [
-          {title: 'Dashboard', component:DashboardPage, icon: 'home'},
+          {title: 'Dashboard', component:MainTabs, icon: 'home'},
           {title: 'Devices list', component:DevicesListPage, icon: 'man'}
         ];
 
