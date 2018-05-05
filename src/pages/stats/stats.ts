@@ -3,7 +3,6 @@ import { LoadingController, NavController } from 'ionic-angular';
 
 import { ConfigsProvider } from '../../providers/configs';
 
-
 @Component({
   selector: 'page-stats',
   templateUrl: 'stats.html'

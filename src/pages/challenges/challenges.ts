@@ -5,8 +5,6 @@ import { Http } from '@angular/http';
 
 import { ConfigsProvider } from '../../providers/configs';
 
-
-
 @Component({
   selector: 'page-challenges',
   templateUrl: 'challenges.html'
