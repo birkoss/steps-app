@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { LoadingController, AlertController, ModalController, NavController, ToastController } from 'ionic-angular';
 
-import { NewSystemModal } from '../../modals/new-system/new-system';
 import { MainTabs } from '../tabs/tabs';
 
 import { StepsSystem, StepsProvider } from '../../providers/steps';
@@ -68,13 +67,11 @@ export class SystemsListPage {
         		})
         		.catch((err) => {
 					this.loading.dismiss();
-
 					this.showErrorMessage(err['message']);
         		});
 			},  
 			(err) => {
 				this.loading.dismiss();
-
 				this.showErrorMessage(err['message']);
 			}
 		);

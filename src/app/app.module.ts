@@ -28,9 +28,6 @@ import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
 import { ChartsModule } from 'ng2-charts';
 
-import { NewSystemModal } from '../modals/new-system/new-system';
-
-
 
 @NgModule({
   declarations: [
@@ -41,9 +38,7 @@ import { NewSystemModal } from '../modals/new-system/new-system';
     StatsPage,
     LoadingPage,
     SystemsListPage,
-    MainTabs,
-
-    NewSystemModal
+    MainTabs
   ],
   imports: [
     BrowserModule,
@@ -61,9 +56,7 @@ import { NewSystemModal } from '../modals/new-system/new-system';
     StatsPage,
     LoadingPage,
     SystemsListPage,
-    MainTabs,
-
-    NewSystemModal
+    MainTabs
   ],
   providers: [
     StepsProvider,
