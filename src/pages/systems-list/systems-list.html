@@ -12,13 +12,14 @@
 
 <ion-content padding>
 
-	<div class="message centered" *ngIf="systems.length == 0">No system...</div>
+	<div class="message centered" *ngIf="configsProvider.getSystems().length == 0">No system...</div>
 
 	<ion-list no-lines>
-		<ion-item *ngFor="let system of systems">
-			{{system}}
-				<button ion-button icon-only clear item-end (tap)="refreshSteps(system);"><ion-icon name="refresh" color="primary"t></ion-icon></button>
-				<button ion-button icon-only clear item-end (tap)="deleteSystem(system)"><ion-icon name="trash" color="danger"t></ion-icon></button>
+		<ion-item *ngFor="let system of configsProvider.getSystems()">
+			{{system.id}}<br />
+			{{system.lastUpdate}}
+				<button ion-button icon-only clear item-end (tap)="refreshSteps(system.id);"><ion-icon name="refresh" color="primary"t></ion-icon></button>
+				<button ion-button icon-only clear item-end (tap)="deleteSystem(system.id)"><ion-icon name="trash" color="danger"t></ion-icon></button>
 		</ion-item>
 	</ion-list>
 

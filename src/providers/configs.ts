@@ -7,24 +7,39 @@ import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
 import 'rxjs/add/operator/map';
 
+export interface ConfigsDevice {
+    id:string;
+    type:string;
+}
+
+export interface ConfigsSystem {
+    id:string;
+    devices:ConfigsDevice[];
+    currentDeviceID:string;
+    lastUpdate:string;
+}
 
 @Injectable()
 export class ConfigsProvider {
 
-	private configs:Object = {};
+    private systems:ConfigsSystem[];
 
     private userUid:number = 0;
 
     constructor(private http:Http, private uniqueDeviceID:UniqueDeviceID, private storage:Storage) {
-        this.configs['systems']	= [];
+        this.systems = [];
     }
+
+    /* Save & Load */
 
     public load() {
         return new Promise((resolve, reject) => {
             this.storage.get('configs').then(data => {
                 if (data != null) {
-                    this.configs = JSON.parse(data);
-                    console.log("loading: ", data, this.configs);
+                    data = JSON.parse(data);
+                    this.systems = data['systems'];
+
+                    console.log("loading: ", data, this.systems);
                 }
                 resolve("ok");
             });
@@ -32,7 +47,10 @@ export class ConfigsProvider {
     }
 
     public save() {
-        this.storage.set('configs', JSON.stringify(this.configs));
+        let data = {
+            systems: this.systems
+        };
+        this.storage.set('configs', JSON.stringify(data));
     }
 
     public getUserUid() {
@@ -56,6 +74,20 @@ export class ConfigsProvider {
            this.http.get("https://steps.birkoss.com/api/steps/update.php?user_uid=" + this.userUid + "&data=" + btoa(JSON.stringify(devices)))
             .map((res) => res.json()).subscribe(data => {
                 if (data['status'] == "success") {
+                    console.log(data);
+                    /* Change the updated date */
+                    this.getSystems().forEach(single_system => {
+                        if (single_system.id == data['data']['systemID']) {
+                            single_system.lastUpdate = data['data']['date_updated'];
+                        }
+                    }, this);
+                    this.save();
+
+                    /* Add new devices */
+                    devices.forEach(single_device => {
+                        this.addDevice(single_device.uuid, single_device.type, single_device.systemID);
+                    }, this);
+
                     resolve(data);
                 } else {
                     reject(data['message']);
@@ -77,7 +109,7 @@ export class ConfigsProvider {
         });
      }
 
-     private getCordovaUniqueID() {
+    private getCordovaUniqueID() {
         return new Promise((resolve, reject) => {
             if (this.userUid > 0) {
                 return resolve(this.userUid);
@@ -95,28 +127,8 @@ export class ConfigsProvider {
                     });
             }
         });
-     }
-    public addSystem(system:any) {
-        this.configs['systems'].push(system.id);
-        this.save();
     }
 
-
-
-    public deleteSystem(systemID:string) {
-        let index = this.configs['systems'].indexOf(systemID);
-        if (index > -1) {
-            this.configs['systems'].splice(index, 1);
-            this.save();
-            return true;
-        }
-
-        return false;
-    }
-
-    public getSystems():any[] {
-        return this.configs['systems'];
-    }
 
      private getApiUniqueID(uuid:string) {
         return new Promise((resolve, reject) => {
@@ -131,4 +143,72 @@ export class ConfigsProvider {
             });
         });
      }
+
+    /* Systems Management */
+
+    public addSystem(systemID:string) {
+        let found = false;
+        this.systems.forEach(single_system => {
+            if (single_system.id == systemID) {
+                found = true;
+            }
+        }, this);
+
+        if (!found) {
+            let system:ConfigsSystem = {
+                id: systemID,
+                devices: [],
+                currentDeviceID: "",
+                lastUpdate: ""
+            }
+            system.id = systemID;
+            this.systems.push(system);
+            this.save();
+        }
+    }
+
+    public deleteSystem(systemID:string) {
+        let index = -1;
+        this.systems = this.systems.filter(single_system => {
+            if (single_system.id == systemID) {
+                return false;
+            }
+            return true;
+        });
+
+        this.save();
+
+        return true;
+    }
+
+    public getSystems():ConfigsSystem[] {
+        return this.systems;
+    }
+
+    public addDevice(deviceID:string, deviceType:string, systemID:string) {
+        if (deviceType == "") {
+            deviceType = "wearable";
+        }
+        if (deviceID == "") {
+            deviceID = systemID;
+        }
+        console.log(deviceID, deviceType, systemID);
+        this.systems.forEach(single_system => {
+            console.log(single_system);
+            if (single_system.id == systemID) {
+                if (single_system.devices.filter(single_device => {
+                    return (single_device.id == deviceID);
+                }, this).length != 1) {
+                    let device:ConfigsDevice = {id:deviceID, type:deviceType};
+                    single_system.devices.push(device);
+                    if (single_system.currentDeviceID == "") {
+                        single_system.currentDeviceID = deviceID;
+                    }
+                }
+            }
+
+        }, this);
+
+        this.save();
+    }
 }

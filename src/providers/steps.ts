@@ -69,6 +69,7 @@ export class StepsProvider {
     }
 
     public refreshSteps(systemID:string) {
+        console.log("refreshSteps:" + systemID);
         var me = this;
 
         return new Promise((resolve, reject) => {
@@ -87,13 +88,13 @@ export class StepsProvider {
                       ])
                       .then(res => { 
                           me.health.queryAggregated({
-                              startDate: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000), // three days ago
-                              endDate: new Date(), // now
+                              startDate: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
+                              endDate: new Date(),
                               dataType: 'steps',
                               bucket: 'day'
                         })
                         .then((data) => {
-                            resolve({status:"success", data:me.convertGoogleAppleSteps(data)});
+                            resolve({status:"success", data:me.convertGoogleAppleSteps(data, systemID)});
                             //alert(JSON.stringify(me.convertGoogleAppleSteps(data)));
                         })
                         .catch(e => reject({status:"error", message:e}));
@@ -129,13 +130,14 @@ export class StepsProvider {
           });
     }
 
-    private convertGoogleAppleSteps(data) {
+    private convertGoogleAppleSteps(data, systemID) {
         let json = data;
 
        var systems = [];
 
        let device = {
             uuid: "",
+            systemID: systemID,
             type: ("wearable"),
             steps: []
         };
@@ -163,6 +165,7 @@ export class StepsProvider {
         json.forEach(single_device => {
             let device = {
                 uuid: single_device['uuid'],
+                systemID: 'samsung',
                 type: (single_device['type'] == "0" ? "phone" : "wearable"),
                 steps: []
             };

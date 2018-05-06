@@ -65,7 +65,7 @@ export class NewSystemModal {
     private addSystem(json) {
         this.loading.dismiss();
 
-        this.configsProvider.addSystem(this.currentSystem);
+        this.configsProvider.addSystem(this.currentSystem.id);
 
         this.currentStep = 3;
     }

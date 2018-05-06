@@ -4,7 +4,7 @@ import { LoadingController, AlertController, ModalController } from 'ionic-angul
 import { NewSystemModal } from '../../modals/new-system/new-system';
 
 import { StepsSystem, StepsProvider } from '../../providers/steps';
-import { ConfigsProvider } from '../../providers/configs';
+import { ConfigsSystem, ConfigsProvider } from '../../providers/configs';
 
 
 @Component({
@@ -15,14 +15,8 @@ export class SystemsListPage {
 
 	private loading:any;
 	
-	private systems:StepsSystem[] = [];
-
 	constructor(private loadingCtrl:LoadingController, private configsProvider:ConfigsProvider, private stepsProvider:StepsProvider, private alertCtrl:AlertController, private modalCtrl:ModalController) {
 		console.log("constructor");
-	}
-
-	private ionViewDidEnter() {
-		this.systems = this.configsProvider.getSystems();
 	}
 
 	private newSystem(event) {
