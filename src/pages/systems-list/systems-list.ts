@@ -54,33 +54,43 @@ export class SystemsListPage {
 			(val) => {
 				this.loading.dismiss();
         		this.configsProvider.addSystem(systemID);
-        		this.refreshSteps(systemID);
+
+				this.loading = this.loadingCtrl.create({
+					spinner: 'hide',
+					content: 'Refreshing steps...'
+				});
+				this.loading.present();
+
+        		this.refreshSteps(systemID)
+        		.then((data) => {
+					this.loading.dismiss();
+					this.navCtrl.setRoot(MainTabs);
+        		})
+        		.catch((err) => {
+					this.loading.dismiss();
+
+					this.showErrorMessage(err['message']);
+        		});
 			},  
 			(err) => {
 				this.loading.dismiss();
 
-				let toast = this.toastCtrl.create({
-					message: err['message'],
-					showCloseButton: true
-				});
-				toast.present();
+				this.showErrorMessage(err['message']);
 			}
 		);
 	}
 
 	private refreshSteps(systemID) {
-		this.loading = this.loadingCtrl.create({
-			spinner: 'hide',
-			content: 'Refreshing steps...'
+		return new Promise((resolve, reject) => {
+			this.stepsProvider.refreshSteps(systemID).then(
+	            (data) => {
+	            	this.configsProvider.updateSteps(data['data'])
+					.then((data) => resolve(data))
+					.catch((err) => reject(err));
+	            },  
+	            (err) => reject(err)
+	        );
 		});
-		this.loading.present();
-
-		let me = this;
-		return this.stepsProvider.refreshSteps(systemID).then(
-            (data) => {
-            	return me.configsProvider.updateSteps(data['data']);
-            }
-        );
 	}
 
 	private deleteSystem(systemID) {
@@ -102,5 +112,13 @@ export class SystemsListPage {
 			]
 		});
 		alert.present();
+	}
+
+	private showErrorMessage(message:string) {
+		let toast = this.toastCtrl.create({
+			message: message,
+			showCloseButton: true
+		});
+		toast.present();
 	}
 }
