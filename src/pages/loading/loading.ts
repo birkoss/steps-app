@@ -30,8 +30,8 @@ export class LoadingPage {
 			me.configsProvider.getUserUid()
 			.then(function (uuid) {
 				me.loading.dismiss();
-				me.navCtrl.setRoot(me.configsProvider.getSystems().length == 0 ? SystemsListPage : SystemsListPage);
-				//me.navCtrl.setRoot(me.configsProvider.getSystems().length == 0 ? SystemsListPage : MainTabs);
+				//me.navCtrl.setRoot(me.configsProvider.getSystems().length == 0 ? SystemsListPage : SystemsListPage);
+				me.navCtrl.setRoot(me.configsProvider.getSystems().length == 0 ? SystemsListPage : MainTabs);
 			})
 			.catch((err) => { alert("NOP: " + err)});
 		})

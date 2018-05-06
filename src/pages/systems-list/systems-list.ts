@@ -49,6 +49,8 @@ export class SystemsListPage {
 
 		this.loading.present();
 
+		var me = this;
+
 		this.stepsProvider.askPermissions(systemID).then(
 			(val) => {
 				this.loading.dismiss();
@@ -56,18 +58,18 @@ export class SystemsListPage {
 
 				this.loading = this.loadingCtrl.create({
 					spinner: 'hide',
-					content: 'Refreshing steps...'
+					content: 'Refreshing steps!...'
 				});
 				this.loading.present();
 
-        		this.refreshSteps(systemID)
+        		me.refreshSteps(systemID)
         		.then((data) => {
-					this.loading.dismiss();
-					this.navCtrl.setRoot(MainTabs);
+					me.loading.dismiss();
+					me.navCtrl.setRoot(MainTabs);
         		})
         		.catch((err) => {
-					this.loading.dismiss();
-					this.showErrorMessage(err['message']);
+					me.loading.dismiss();
+					me.showErrorMessage(err['message']);
         		});
 			},  
 			(err) => {
@@ -79,13 +81,14 @@ export class SystemsListPage {
 
 	private refreshSteps(systemID) {
 		return new Promise((resolve, reject) => {
+			var me = this;
 			this.stepsProvider.refreshSteps(systemID).then(
 	            (data) => {
-	            	this.configsProvider.updateSteps(data['data'])
+	            	me.configsProvider.updateSteps(data['data'])
 					.then((data) => resolve(data))
-					.catch((err) => reject(err));
+					.catch((err) => { reject(err) });
 	            },  
-	            (err) => reject(err)
+	            (err) => { reject(err) }
 	        );
 		});
 	}

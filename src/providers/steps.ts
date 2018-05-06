@@ -76,7 +76,6 @@ export class StepsProvider {
            switch (systemID) {
                 case "apple":
                 case "google":
-                var me = this;
                     this.health.isAvailable()
                     .then((available:boolean) => {
                       console.log(available);
