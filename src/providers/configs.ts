@@ -98,7 +98,7 @@ export class ConfigsProvider {
 
      public getSteps(deviceID:any) {
         return new Promise((resolve, reject) => {
-           this.http.get("https://steps.birkoss.com/api/steps/get.php?user_uid=" + this.userUid + "&device_id=" + encodeURI(deviceID))
+           this.http.get("https://steps.birkoss.com/api/steps/get.php?user_uid=" + this.userUid + "&device_id=" + btoa(deviceID))
             .map((res) => res.json()).subscribe(data => {
                 if (data['status'] == "success") {
                     resolve(data);
@@ -210,5 +210,9 @@ export class ConfigsProvider {
         }, this);
 
         this.save();
+    }
+
+    public getDevices():ConfigsDevice[] {
+        return this.getSystems()[0]['devices'];
     }
 }

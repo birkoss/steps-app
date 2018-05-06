@@ -9,7 +9,11 @@
 
 <ion-content padding>
 
-Stats...
+  <ion-segment [(ngModel)]="currentDeviceID" (ionChange)="segmentChanged($event)" color="secondary">
+    <ion-segment-button *ngFor="let device of configsProvider.getDevices()" [value]="device.id">
+      {{device.type}}
+    </ion-segment-button>
+  </ion-segment>
 
   <div>
     <div style="display: block">

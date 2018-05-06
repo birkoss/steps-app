@@ -10,12 +10,19 @@ import { ConfigsProvider } from '../../providers/configs';
 export class StatsPage {
 
 	loading:any;
+  currentDeviceID:string;
 
 	constructor(private loadingCtrl:LoadingController, private configsProvider:ConfigsProvider, public navCtrl:NavController) { }
 
 	ionViewDidEnter() {
+        this.currentDeviceID = this.configsProvider.getDevices()[0]['id'];
 		this.refreshSteps();
 	}
+
+  segmentChanged(event) {
+    this.currentDeviceID = event.value;
+    this.refreshSteps();
+  }
 
 	private refreshSteps() {
 		this.loading = this.loadingCtrl.create({
@@ -24,8 +31,10 @@ export class StatsPage {
 		});
 		this.loading.present();
 
+this.barChartLabels = [];
+
 		let me = this;
-		this.configsProvider.getSteps("ALV976sVxD").then(
+		this.configsProvider.getSteps(this.currentDeviceID).then(
             (data) => {
             	this.loading.dismiss();
             	console.log(JSON.stringify(this.barChartData));
@@ -42,9 +51,9 @@ export class StatsPage {
                 worldData.push(parseInt(single_stat.average));
               });
 
-    			let clone = JSON.parse(JSON.stringify(this.barChartData));
-    			clone[0] = {data:userData, label:"You"};
-    			clone[1] = {data:worldData, label:"Average"};
+      			let clone = JSON.parse(JSON.stringify(this.barChartData));
+      			clone[0] = {data:userData, label:"You"};
+      			clone[1] = {data:worldData, label:"Average"};
 
             	this.barChartData = clone;
 				console.log(JSON.stringify(this.barChartData));

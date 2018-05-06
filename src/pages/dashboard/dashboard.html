@@ -9,18 +9,21 @@
 
 <ion-content padding>
 
-  <div>
-    <div style="display: block">
-      <canvas height="300" baseChart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [legend]="barChartLegend"
-              [chartType]="barChartType"
+
+  <ion-segment [(ngModel)]="currentDeviceID" (ionChange)="segmentChanged($event)" color="secondary">
+    <ion-segment-button *ngFor="let device of configsProvider.getDevices()" [value]="device.id">
+      {{device.type}}
+    </ion-segment-button>
+  </ion-segment>
+
+<div style="display: block; padding-top: 20px;">
+  <canvas baseChart
+              [data]="doughnutChartData"
+              [labels]="doughnutChartLabels"
+              [chartType]="doughnutChartType"
               (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
-    </div>
-  </div>
+</div>
 
 
 </ion-content>
