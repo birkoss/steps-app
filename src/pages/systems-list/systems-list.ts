@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { LoadingController, AlertController, ModalController } from 'ionic-angular';
+import { LoadingController, AlertController, ModalController, NavController, ToastController } from 'ionic-angular';
 
 import { NewSystemModal } from '../../modals/new-system/new-system';
+import { MainTabs } from '../tabs/tabs';
 
 import { StepsSystem, StepsProvider } from '../../providers/steps';
 import { ConfigsSystem, ConfigsProvider } from '../../providers/configs';
@@ -15,40 +16,69 @@ export class SystemsListPage {
 
 	private loading:any;
 	
-	constructor(private loadingCtrl:LoadingController, private configsProvider:ConfigsProvider, private stepsProvider:StepsProvider, private alertCtrl:AlertController, private modalCtrl:ModalController) {
-		console.log("constructor");
+	constructor(private navCtrl:NavController, private toastCtrl:ToastController, private loadingCtrl:LoadingController, private configsProvider:ConfigsProvider, private stepsProvider:StepsProvider, private alertCtrl:AlertController, private modalCtrl:ModalController) { }
+
+	private refreshSystems(event) {
+		this.configsProvider.getSystems().forEach(single_system => {
+			this.refreshSteps(single_system.id);
+		}, this);
 	}
 
-	private newSystem(event) {
-		let modal = this.modalCtrl.create(NewSystemModal);
-        modal.present();
+	private isAvailable(systemID:string) {
+		return this.configsProvider.getSystems().filter(single_system => {
+			return (single_system.id == systemID);
+		}, this).length != 1;
+	}
+
+	private getLabel(systemID:string) {
+		let label = "No stats available";
+
+		this.configsProvider.getSystems().filter(single_system => {
+			if (single_system.id == systemID) {
+				label = "Updated: " + single_system.lastUpdate;
+			}
+		}, this);
+
+		return label;
+	}
+
+	private addSystem(systemID:string) {
+		this.loading = this.loadingCtrl.create({
+			spinner: 'hide',
+			content: 'Waiting for the permissions...'
+		});
+
+		this.loading.present();
+
+		this.stepsProvider.askPermissions(systemID).then(
+			(val) => {
+				this.loading.dismiss();
+        		this.configsProvider.addSystem(systemID);
+        		this.refreshSteps(systemID);
+			},  
+			(err) => {
+				this.loading.dismiss();
+
+				let toast = this.toastCtrl.create({
+					message: err['message'],
+					showCloseButton: true
+				});
+				toast.present();
+			}
+		);
 	}
 
 	private refreshSteps(systemID) {
 		this.loading = this.loadingCtrl.create({
 			spinner: 'hide',
-			content: 'Updating steps...'
+			content: 'Refreshing steps...'
 		});
 		this.loading.present();
 
 		let me = this;
-		this.stepsProvider.refreshSteps(systemID).then(
+		return this.stepsProvider.refreshSteps(systemID).then(
             (data) => {
-     
-            	this.configsProvider.updateSteps(data['data'])
-				.then(function (data) {
-					me.loading.dismiss();
-					// @TODO Do something to show it worked
-					//alert("YEP" + data);
-				})
-				.catch((err) => { 
-					me.loading.dismiss();
-					alert("NOP: " + err)
-				});
-            },  
-            (err) => {
-            	me.loading.dismiss();
-            	alert("ERROR: " + err['message']);
+            	return me.configsProvider.updateSteps(data['data']);
             }
         );
 	}

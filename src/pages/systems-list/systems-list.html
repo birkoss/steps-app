@@ -5,21 +5,22 @@
 		<ion-title>Systems List</ion-title>
 
 		<ion-buttons end>
-			<button ion-button icon-only (tap)="newSystem($event)"><ion-icon name="add"></ion-icon></button>
+			<button  *ngIf="configsProvider.getSystems().length > 0" ion-button icon-only (tap)="refreshSystems($event)"><ion-icon name="refresh"></ion-icon></button>
 		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-	<div class="message centered" *ngIf="configsProvider.getSystems().length == 0">No system...</div>
+	<div class="message centered" *ngIf="stepsProvider.getSystems().length == 0">No system...</div>
 
-	<ion-list no-lines>
-		<ion-item *ngFor="let system of configsProvider.getSystems()">
-			{{system.id}}<br />
-			{{system.lastUpdate}}
-				<button ion-button icon-only clear item-end (tap)="refreshSteps(system.id);"><ion-icon name="refresh" color="primary"t></ion-icon></button>
-				<button ion-button icon-only clear item-end (tap)="deleteSystem(system.id)"><ion-icon name="trash" color="danger"t></ion-icon></button>
+	<ion-list>
+		<ion-item *ngFor="let system of stepsProvider.getSystems()">
+			<ion-icon name="leaf" item-start></ion-icon>
+			<h2>{{system.name}}</h2>
+			<p>{{getLabel(system.id)}}</p>
+			<button *ngIf="isAvailable(system.id)" ion-button item-end (tap)="addSystem(system.id)">Add</button>
+			<button color="danger" *ngIf="!isAvailable(system.id)" ion-button item-end (tap)="deleteSystem(system.id)">Remove</button>
 		</ion-item>
 	</ion-list>
 
