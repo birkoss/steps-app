@@ -46,7 +46,6 @@ export class DashboardPage {
             	this.loading.dismiss();
             	me.doughnutChartData = [];
             	data['data']['steps'].reverse().forEach(single_step => {
-                alert(single_step.steps);
 
                 if (me.doughnutChartData.length == 0) {
                   me.doughnutChartData.push(single_step.steps);
@@ -59,7 +58,7 @@ export class DashboardPage {
             },  
             (err) => {
             	this.loading.dismiss();
-            	alert(err['message']);
+            	alert("ERROR: " + err['message']);
             }
         );
 	}

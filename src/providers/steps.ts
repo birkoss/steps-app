@@ -37,7 +37,6 @@ export class StepsProvider {
                         }
                       ])
                       .then(res => { 
-                          alert(res);
                           resolve({status:"success", message:res})
                       })
                       .catch(e => reject({status:"error", message:e}));

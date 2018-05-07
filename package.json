@@ -22,6 +22,7 @@
     "@angular/platform-browser": "5.2.10",
     "@angular/platform-browser-dynamic": "5.2.10",
     "@ionic-native/android-permissions": "^4.7.0",
+    "@ionic-native/background-mode": "^4.7.0",
     "@ionic-native/core": "4.7.0",
     "@ionic-native/health": "^4.7.0",
     "@ionic-native/http": "^4.7.0",
@@ -35,8 +36,10 @@
     "com.wopo.shealth": "file:../cordova-plugin-shealth",
     "cordova": "^7.1.0",
     "cordova-android": "^6.3.0",
+    "cordova-ios": "~4.5.4",
     "cordova-plugin-advanced-http": "^1.11.1",
     "cordova-plugin-android-permissions": "^1.0.0",
+    "cordova-plugin-background-mode": "git+https://github.com/katzer/cordova-plugin-background-mode.git",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-health": "^1.0.5",
@@ -72,10 +75,12 @@
       "cordova-plugin-x-socialsharing": {},
       "cordova-plugin-uniquedeviceid": {},
       "com.birkoss.samsung-health": {},
-      "cordova-plugin-health": {}
+      "cordova-plugin-health": {},
+      "cordova-plugin-background-mode": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   }
 }

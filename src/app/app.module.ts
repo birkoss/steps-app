@@ -3,6 +3,8 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { BackgroundMode } from '@ionic-native/background-mode';
+
 
 import { MyApp } from './app.component';
 
@@ -63,6 +65,7 @@ import { ChartsModule } from 'ng2-charts';
     ConfigsProvider,
     SocialSharing,
     Health,
+    BackgroundMode,
     AndroidPermissions,
     StatusBar,
     SplashScreen,
