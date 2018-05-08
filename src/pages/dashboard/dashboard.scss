@@ -1,3 +1,16 @@
 page-dashboard {
 
+	ion-content {
+		background-color: #f4f4f4 !important;
+		padding: 0;
+
+		ion-row.date {
+			flex-wrap: nowrap;
+
+			ion-col.title {
+				white-space: normal;
+				text-align: center;
+			}
+		}
+	}
 }

@@ -18,6 +18,9 @@ import { MainTabs } from '../pages/tabs/tabs';
 import { StepsProvider } from '../providers/steps';
 import { ConfigsProvider } from '../providers/configs';
 
+import { DayPrettify } from '../pipes/day-prettify';
+import { DatePrettify } from '../pipes/date-prettify';
+
 import { IonicStorageModule } from '@ionic/storage';
 
 import { Health } from '@ionic-native/health';
@@ -34,6 +37,9 @@ import { ChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     MyApp,
+
+    DayPrettify,
+    DatePrettify,
 
     DashboardPage,
     ChallengesPage,

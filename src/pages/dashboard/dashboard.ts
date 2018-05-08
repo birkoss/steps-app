@@ -14,25 +14,26 @@ declare var SamsungHealth:any;
 })
 export class DashboardPage {
 
-	currentDeviceID:string;
+	currentFilter:string;
 	loading:any;
+
+  today:Object = {};
 
 	constructor(private loadingCtrl:LoadingController, private configsProvider:ConfigsProvider, public http:Http, public navCtrl:NavController) { }
 
 	ionViewDidEnter() {
-    this.currentDeviceID = this.configsProvider.getDevices()[0]['id'];
-
-    console.log(this.currentDeviceID);
-		this.refreshSteps();
+    this.currentFilter = "days";
+    console.log(this.currentFilter);
+		this.getData();
 	}
 
   segmentChanged(event) {
-    this.currentDeviceID = event.value;
-    this.refreshSteps();
+    this.currentFilter = event.value;
+    this.getData();
   }
 
-	private refreshSteps() {
-    console.log("refreshing: " + this.currentDeviceID);
+	private getData() {
+    console.log("refreshing: " + this.currentFilter);
 
 		this.loading = this.loadingCtrl.create({
 			spinner: 'hide',
@@ -41,20 +42,15 @@ export class DashboardPage {
 		this.loading.present();
 
 		let me = this;
-		this.configsProvider.getSteps(this.currentDeviceID).then(
+		this.configsProvider.getMe(this.configsProvider.getDevices()[0]['id']).then(
             (data) => {
             	this.loading.dismiss();
-            	me.doughnutChartData = [];
-            	data['data']['steps'].reverse().forEach(single_step => {
 
-                if (me.doughnutChartData.length == 0) {
-                  me.doughnutChartData.push(single_step.steps);
-                }
-            	});
+            	me.today = data['data']['today'];
+              me.today['dayOfWeek'] = new Date(me.today['date']).getDay();
 
-              me.doughnutChartData.push( Math.max(0, 6000 - me.doughnutChartData[0]));
 
-              console.log(me.doughnutChartData);
+              console.log(me.today);
             },  
             (err) => {
             	this.loading.dismiss();
@@ -62,20 +58,4 @@ export class DashboardPage {
             }
         );
 	}
-
-  public doughnutChartLabels:string[] = ['Today', 'Goals'];
-  public doughnutChartData:number[] = [350, (6000-350)];
-  public doughnutChartType:string = 'doughnut';
- 
-  // events
-  public chartClicked(e:any):void {
-    console.log(e);
-  }
- 
-  public chartHovered(e:any):void {
-    console.log(e);
-  }
-
-
-
 }

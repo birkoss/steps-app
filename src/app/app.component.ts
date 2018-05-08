@@ -37,17 +37,21 @@ export class MyApp {
 
   constructor(private stepsProvider:StepsProvider, private configsProvider:ConfigsProvider, private backgroundMode:BackgroundMode, public menu:MenuController, platform:Platform, statusBar:StatusBar, splashScreen:SplashScreen) {
     platform.ready().then(() => {
-alert("...");
-
-      this.backgroundMode.enable();
       
-      this.backgroundMode.on("enable").subscribe(y => {
-        Observable.interval(15000 * 60).subscribe(x => {
-          this.configsProvider.getSystems().forEach(single_system => {
-            this.refreshSteps(single_system.id);
-          }, this);
+      try {
+        this.backgroundMode.enable();
+        
+        this.backgroundMode.on("enable").subscribe(y => {
+          Observable.interval(15000 * 60).subscribe(x => {
+            this.configsProvider.getSystems().forEach(single_system => {
+              this.refreshSteps(single_system.id);
+            }, this);
+          });
         });
-      });
+      }
+      catch(err) {
+        //alert(err.message);
+      }
 
         this.pages = [
           {title: 'Dashboard', component:MainTabs, icon: 'home'},

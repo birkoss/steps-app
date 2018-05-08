@@ -9,21 +9,32 @@
 
 <ion-content padding>
 
-
-  <ion-segment [(ngModel)]="currentDeviceID" (ionChange)="segmentChanged($event)" color="secondary">
-    <ion-segment-button *ngFor="let device of configsProvider.getDevices()" [value]="device.id">
-      {{device.type}}
-    </ion-segment-button>
+  <ion-segment [(ngModel)]="currentFilter" (ionChange)="segmentChanged($event)" color="secondary">
+    <ion-segment-button value="days">Days</ion-segment-button>
+    <ion-segment-button value="weeks">Weeks</ion-segment-button>
+    <ion-segment-button value="months">Months</ion-segment-button>
   </ion-segment>
 
-<div style="display: block; padding-top: 20px;">
-  <canvas baseChart
-              [data]="doughnutChartData"
-              [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType"
-              (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
-</div>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="date">
+        <ion-col col-2><button ion-button icon-only><ion-icon name="arrow-back"></ion-icon></button></ion-col>
+        <ion-col class="title">
+          <h1>{{ today.dayOfWeek | dayPrettify }}</h1>
+          <h2>{{ today.date | datePrettify }}</h2>
+        </ion-col>
+        <ion-col col-2><button disabled ion-button ion-end icon-only><ion-icon name="arrow-forward"></ion-icon></button></ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>Today: {{ today.steps }}</h2>
 
+      <h3>Yesterday: {{ today.yesterday }}</h3>
+
+      <h3>Average: {{ today.steps_average }}</h3>
+
+      <h3>Max: {{ today.max_steps }}</h3>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>

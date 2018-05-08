@@ -18,12 +18,12 @@ export class LoadingPage {
 	constructor(private stepsProvider:StepsProvider, private configsProvider:ConfigsProvider, private navCtrl:NavController, private loadingCtrl:LoadingController) { }
 
 	ionViewDidEnter() {
-		alert("abc");
 		this.loading = this.loadingCtrl.create({
 			spinner: 'hide',
 			content: 'Loading...'
 		});
 		this.loading.present();
+
 
 		let me = this;
 		this.configsProvider.load()

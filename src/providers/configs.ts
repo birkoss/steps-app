@@ -110,6 +110,20 @@ export class ConfigsProvider {
         });
      }
 
+     public getMe(deviceID:any) {
+        return new Promise((resolve, reject) => {
+            console.log("https://steps.birkoss.com/api/steps/me.php?user_uid=" + this.userUid + "&device_id=" + btoa(deviceID));
+           this.http.get("https://steps.birkoss.com/api/steps/me.php?user_uid=" + this.userUid + "&device_id=" + btoa(deviceID))
+            .map((res) => res.json()).subscribe(data => {
+                if (data['status'] == "success") {
+                    resolve(data);
+                } else {
+                    reject(data['message']);
+                }
+            });
+        });
+     }
+
     private getCordovaUniqueID() {
         return new Promise((resolve, reject) => {
             if (this.userUid > 0) {
